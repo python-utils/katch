@@ -4,7 +4,7 @@ from setuptools import setup
 
 install_requires = ["flask"]
 
-tests_require = ["bandit", "black", "coverage-badge", "pytest", "pytest-cov", "safety"]
+tests_require = ["bandit", "black", "coverage-badge", "pytest", "pytest_pylint", "pytest-cov", "safety"]
 
 extras = {
     "test": tests_require,
