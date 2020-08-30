@@ -25,9 +25,8 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        sudo apt-get install build-essential musl-dev
+        sudo apt-get install build-essential musl-dev python-dev
         python -m pip install --upgrade pip
-        pwd && ls -la
         pip install -e . && pip install -e .[test]
     - name: Lint with Black
       run: |
