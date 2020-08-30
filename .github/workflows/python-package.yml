@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.5, 3.6, 3.7, 3.8]
+        python-version: [3.6, 3.7, 3.8]
 
     steps:
     - uses: actions/checkout@v2
@@ -27,6 +27,7 @@ jobs:
       run: |
         sudo apt-get install build-essential musl-dev python-dev
         python -m pip install --upgrade pip
+        python -m pip install wheel
         pip install -e . && pip install -e .[test]
     - name: Lint with Black
       run: |
