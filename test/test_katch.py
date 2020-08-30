@@ -57,7 +57,7 @@ class TestCatcher:
         assert 418 == response.status_code
         assert type(error) == dict
         assert "I'm a teapot" == error.get("msg")
-        assert "can only concatenate str (not \"NoneType\") to str" == error.get("err")
+        assert error.get("err")
 
     @staticmethod
     def test_catcher_with_user_defined_exception(app, client):
