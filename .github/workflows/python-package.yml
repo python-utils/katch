@@ -27,6 +27,7 @@ jobs:
       run: |
         sudo apt-get install build-essential musl-dev
         python -m pip install --upgrade pip
+        pwd && ls -la
         pip install -e . && pip install -e .[test]
     - name: Lint with Black
       run: |
