@@ -1,7 +1,7 @@
 <div align="center">
-
-[![Codefresh build status]( https://g.codefresh.io/api/badges/pipeline/python-utils/katch-ci%2Fkatch-ci?type=cf-1&key=eyJhbGciOiJIUzI1NiJ9.NWY0YjE1YTU2NDgwMzU1N2UxNjViMzhj.gaE2miSJx_85nbwyKnesXkXNRTBKw597DtOGTjlf6iU)]( https://g.codefresh.io/pipelines/edit/new/builds?id=5f4b1650109c4f7cadc8beb0&pipeline=katch-ci&projects=katch-ci&projectId=5f4b161b64131f72fc953e6b)
-<a href="https://github.com/psf/black"><img alt="Code style: black" src="https://katch-ci-artifacts.s3.us-east-2.amazonaws.com/5f4b1650109c4f7cadc8beb0/master/5f4b2d7d0c37bab6e74732f7/coverage.svg"></a>
+    <a href="https://g.codefresh.io/pipelines/edit/new/builds?id=5f4b1650109c4f7cadc8beb0&pipeline=katch-ci&projects=katch-ci&projectId=5f4b161b64131f72fc953e6b"><img src="https://g.codefresh.io/api/badges/pipeline/python-utils/katch-ci%2Fkatch-ci?type=cf-1&key=eyJhbGciOiJIUzI1NiJ9.NWY0YjE1YTU2NDgwMzU1N2UxNjViMzhj.gaE2miSJx_85nbwyKnesXkXNRTBKw597DtOGTjlf6iU"></a>
+    <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://katch-ci-artifacts.s3.us-east-2.amazonaws.com/5f4b1650109c4f7cadc8beb0/master/5f4b2d7d0c37bab6e74732f7/coverage.svg"></a>
+    <a href="https://pypi.org/project/katch/"><img src="https://badge.fury.io/py/katch.svg" alt="PyPI version" height="18"></a>
 </div>
 
 <h2 align="center">Katch - declarative error handling for Flask</h2>
