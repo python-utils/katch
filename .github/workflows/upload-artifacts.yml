@@ -7,10 +7,6 @@ on:
     branches:
       - master
 jobs:
-  env:
-    AWS_ACCESS_KEY_ID: ${{ secrets.CI_ARTIFACTS_ACCESS_KEY_ID }}
-    AWS_SECRET_ACCESS_KEY: ${{ secrets.CI_ARTIFACTS_SECRET_ACCESS_KEY }}
-    AWS_DEFAULT_REGION: us-east-2
   build:
     runs-on: ubuntu-latest
     strategy:
@@ -42,6 +38,14 @@ jobs:
     - name: Upload coverage badge to S3
       run: |
         aws s3 cp htmlcov/coverage.svg s3://katch-ci/coverage.svg
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.CI_ARTIFACTS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.CI_ARTIFACTS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: us-east-2
     - name: Upload coverage report to S3
       run: |
         aws s3 cp htmlcov s3://katch-ci/ --recursive
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.CI_ARTIFACTS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.CI_ARTIFACTS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: us-east-2
