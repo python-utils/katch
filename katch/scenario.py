@@ -6,13 +6,13 @@ class Scenario:
 
     def __init__(
         self,
-        exception,
+        exceptions,
         func=None,
         constant=None,
         stringify_exception=False,
         status_code=500,
     ):
-        self.exception = exception
+        self.exceptions = exceptions
         self.stringify_exception = stringify_exception
         self.func = func
         self.constant = constant
@@ -36,7 +36,7 @@ class Scenario:
         self.stringify_exception = True
         return self
 
-    def and_return_string(self, constant):
+    def and_return(self, constant):
         self.constant = constant
         return self
 
@@ -46,5 +46,5 @@ class Scenario:
         return self
 
 
-def catch(exception):
-    return Scenario(exception=exception)
+def catch(*exceptions):
+    return Scenario(exceptions=list(exceptions))

@@ -28,7 +28,7 @@ def break_list():
     return my_list[1]
 
 catcher.add_scenario(
-    catch(IndexError).with_status_code(400).and_return_string("Out of bound")
+    catch(IndexError).with_status_code(400).and_return("Out of bound")
 )
 ```
 
@@ -37,11 +37,21 @@ Calling the endpoint above with `curl 127.0.0.1:5000/break-list` will yield the 
 {"error": "Out of bound"}
 ```
 
+### Handle Multiple Exceptions Similarly
+
+You can catch multiple exception classes with the same method: 
+
+```python
+catcher.add_scenario(
+    catch(IndexError, AssertionError, AttributeError).with_status_code(400).and_return("Out of bound")
+)
+```
+
 ### Response Evaluation
 
 *Katch* scenarios currently support three different response evaluation types: 
 
-1. Returning a constant (e.g., a string containing the appropriate message for the scenario)
+1. Returning a constant value (e.g., a string containing the appropriate message for the scenario)
 1. Returning a string representation of the raised exception
 1. Returning a value from a callable
 
@@ -51,8 +61,8 @@ Calling the endpoint above with `curl 127.0.0.1:5000/break-list` will yield the 
 app = Flask(__name__)
 catcher = Catcher(app=app, envelope="error")
 catcher.add_scenarios(
-    catch(IndexError).with_status_code(400).and_return_string("Out of bound"),
-    catch(TypeError).with_status_code(418).and_return_string("Type violation"),
+    catch(IndexError).with_status_code(400).and_return("Out of bound"),
+    catch(TypeError).with_status_code(418).and_return("Type violation"),
 )
 ```
 
@@ -155,8 +165,8 @@ thus the following wouldn't make sense:
 
 ```python
 catcher.add_scenario(
-    catch(ArithmeticError).with_status_code(400).and_return_string("Can't calculate this"),
-    catch(ZeroDivisionError).with_status_code(400).and_return_string("Can't divide by 0"), # caught by the 1st scenario
+    catch(ArithmeticError).with_status_code(400).and_return("Can't calculate this"),
+    catch(ZeroDivisionError).with_status_code(400).and_return("Can't divide by 0"), # caught by the 1st scenario
 )
 ```
 

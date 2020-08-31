@@ -58,6 +58,7 @@ class Catcher:
 
     def _apply(self):
         for scenario in self.scenarios:
-            self.app.register_error_handler(
-                scenario.exception, self._generate_scenario_handler(scenario)
-            )
+            for e in scenario.exceptions:
+                self.app.register_error_handler(
+                    e, self._generate_scenario_handler(scenario)
+                )
