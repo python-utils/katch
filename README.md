@@ -1,14 +1,14 @@
 <div align="center">
     <a href="https://github.com/python-utils/katch/actions?query=workflow%3ACI"><img alt="CI Job" src="https://github.com/python-utils/katch/workflows/CI/badge.svg"></a>
-    <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://katch-ci.s3.us-east-2.amazonaws.com/aha.svg"></a>
-    <a href="https://pypi.org/project/katch/"><img src="https://badge.fury.io/py/katch.svg" alt="PyPI version" height="18"></a>
+    <a href="https://d1hdw3nr47lpgi.cloudfront.net/index.html"><img alt="Code style: black" src="https://d1hdw3nr47lpgi.cloudfront.net/coverage.svg"></a>
+    <a href="https://pypi.org/project/katch/"><img src="https://badge.fury.io/py/katch.svg" alt="PyPI version" height="20"></a>
 </div>
 
 <h2 align="center">Katch - declarative error handling for Flask</h2>
 
 
 *Katch* is a declarative way to manage your error handling in a Flask server.
-While Flask already possesses error handling capabilities, which are technically Pythonic,
+Whilst Flask possesses simple yet very efficient error handling capabilities,
 it often becomes cumbersome to keep track of where errors are handled.
 
 ## Usage
@@ -21,14 +21,15 @@ from katch import Catcher, catch
 
 app = Flask(__name__)
 catcher = Catcher(app=app, envelope="error")
-catcher.add_scenario(
-    catch(IndexError).with_status_code(400).and_return_string("Out of bound")
-)
 
 @app.route("/break-list")
 def break_list():
     my_list = ["foo"]
     return my_list[1]
+
+catcher.add_scenario(
+    catch(IndexError).with_status_code(400).and_return_string("Out of bound")
+)
 ```
 
 Calling the endpoint above with `curl 127.0.0.1:5000/break-list` will yield the following:
@@ -185,3 +186,7 @@ make check-style        # will run code style checks
 make check-security     # will run general security checks
 make check-dependencies # will run dependency checks to scan for vulnerable dependencies
 ```
+
+## License
+
+MIT license
