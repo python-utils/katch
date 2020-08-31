@@ -1,6 +1,6 @@
 <div align="center">
     <a href="https://github.com/python-utils/katch/actions?query=workflow%3ACI"><img alt="CI Job" src="https://github.com/python-utils/katch/workflows/CI/badge.svg"></a>
-    <a href="https://d1hdw3nr47lpgi.cloudfront.net/index.html"><img alt="Code style: black" src="https://d1hdw3nr47lpgi.cloudfront.net/coverage.svg"></a>
+    <!--<a href="https://d1hdw3nr47lpgi.cloudfront.net/index.html"><img alt="Code style: black" src="https://d1hdw3nr47lpgi.cloudfront.net/coverage.svg"></a>-->
     <a href="https://pypi.org/project/katch/"><img src="https://badge.fury.io/py/katch.svg" alt="PyPI version" height="20"></a>
 </div>
 
