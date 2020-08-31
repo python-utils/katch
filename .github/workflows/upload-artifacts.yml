@@ -1,0 +1,47 @@
+name: Upload CI Artifacts
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  env:
+    AWS_ACCESS_KEY_ID: ${{ secrets.CI_ARTIFACTS_ACCESS_KEY_ID }}
+    AWS_SECRET_ACCESS_KEY: ${{ secrets.CI_ARTIFACTS_SECRET_ACCESS_KEY }}
+    AWS_DEFAULT_REGION: us-east-2
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install Python dependencies
+      run: |
+        sudo apt-get install build-essential musl-dev python-dev
+        python -m pip install --upgrade pip
+        python -m pip install wheel
+        pip install -e . && pip install -e .[test]
+    - name: Install AWS CLI
+      run: |
+        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+        unzip awscliv2.zip
+        sudo ./aws/install
+    - name: Run tests with coverage report
+      run: |
+        python -m pytest --cov=katch/ --cov-report html
+    - name: Generate coverage badge
+      run: |
+        coverage-badge -f -o htmlcov/coverage.svg
+    - name: Upload coverage badge to S3
+      run: |
+        aws s3 cp htmlcov/coverage.svg s3://katch-ci/coverage.svg
+    - name: Upload coverage report to S3
+      run: |
+        aws s3 cp htmlcov s3://katch-ci/ --recursive
