@@ -48,5 +48,3 @@ class Scenario:
 
 def catch(*exceptions):
     return Scenario(exceptions=list(exceptions))
-
-
