@@ -7,7 +7,7 @@ class TestCatcher:
     def test_catcher_with_returned_string(app, client):
 
         Catcher(app=app, envelope="error").add_scenarios(
-            catch(IndexError).with_status_code(400).and_return_string("Out of bound"),
+            catch(IndexError).with_status_code(400).and_return("Out of bound"),
         )
 
         @app.route("/break-something")
@@ -118,7 +118,7 @@ class TestCatcher:
 
         catcher = Catcher(envelope="error")
         catcher.add_scenario(
-            catch(IndexError).with_status_code(400).and_return_string("Out of bound"),
+            catch(IndexError).with_status_code(400).and_return("Out of bound"),
         )
         catcher.add_scenarios(
             catch(ArithmeticError).with_status_code(400).and_stringify(),
@@ -141,7 +141,7 @@ class TestCatcher:
         catcher = Catcher(
             envelope="error",
             scenarios=[
-                catch(IndexError).with_status_code(400).and_return_string("Out of bound"),
+                catch(IndexError).with_status_code(400).and_return("Out of bound"),
                 catch(ArithmeticError).with_status_code(400).and_stringify(),
             ]
         )
@@ -156,3 +156,31 @@ class TestCatcher:
         error = response.json.get("error")
         assert 400 == response.status_code
         assert "Out of bound" == error
+
+    @staticmethod
+    def test_catcher_with_multiple_exceptions_in_scenario(app, client):
+
+        Catcher(
+            app=app,
+            envelope="msg",
+            scenarios=[
+                catch(IndexError, ArithmeticError).with_status_code(401).and_return("Out of the question"),
+            ]
+        )
+
+        @app.route("/break-list")
+        def break_list():
+            my_list = ["foo"]
+            return my_list[1]
+
+        @app.route("/break-math")
+        def break_math():
+            x, y, = 1, 0
+            return x / y
+
+        response_1 = client.get("/break-list")
+        error_1 = response_1.json.get("msg")
+        response_2 = client.get("/break-math")
+        error_2 = response_2.json.get("msg")
+        assert response_1.status_code == response_1.status_code == 401
+        assert error_1 == error_2 == "Out of the question"
