@@ -158,7 +158,7 @@ def break_something():
 
 By default, *Katch* will return the status codes in the response body for registered scenarios, unless the envelope
 was set to `None` explicitly. You can either change the name of the attribute by passing a different string value to
-(e.g., `Catcher(app=app, code="status_code"))`), or you can setting to `None` to avoid adding it to the response body.
+(e.g., `Catcher(app=app, code="status_code"))`), or you can set `code` to `None` in order to avoid adding it to the response body.
 
 
 ### Exception Ancestry
@@ -206,4 +206,4 @@ make check-dependencies # will run dependency checks to scan for vulnerable depe
 
 ## License
 
-MIT license
+MIT License
