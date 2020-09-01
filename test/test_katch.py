@@ -6,7 +6,7 @@ class TestCatcher:
     @staticmethod
     def test_catcher_with_returned_string(app, client):
 
-        Catcher(app=app, envelope="error").add_scenarios(
+        Catcher(app=app, envelope="error", code="status_code").add_scenarios(
             catch(IndexError).with_status_code(400).and_return("Out of bound"),
         )
 
@@ -17,7 +17,8 @@ class TestCatcher:
 
         response = client.get("/break-something")
         error = response.json.get("error")
-        assert 400 == response.status_code
+        code_from_body = response.json.get("status_code")
+        assert 400 == response.status_code == code_from_body
         assert "Out of bound" == error
 
     @staticmethod
@@ -33,12 +34,13 @@ class TestCatcher:
 
         response = client.get("/break-something")
         message = response.json.get("message")
-        assert 401 == response.status_code
+        code_from_body = response.json.get("code")
+        assert 401 == response.status_code == code_from_body
         assert "division by zero" == message
 
     @staticmethod
     def test_catcher_with_callable_return_value(app, client):
-        Catcher(app=app, envelope="error").add_scenario(
+        Catcher(app=app, envelope="error", code=None).add_scenario(
             catch(TypeError).with_status_code(418).and_call(
                 lambda e: dict(
                     msg="I'm a teapot",
@@ -58,6 +60,7 @@ class TestCatcher:
         assert type(error) == dict
         assert "I'm a teapot" == error.get("msg")
         assert error.get("err")
+        assert not response.json.get("code")
 
     @staticmethod
     def test_catcher_with_user_defined_exception(app, client):
