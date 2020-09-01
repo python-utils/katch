@@ -47,9 +47,7 @@ class Catcher:
                 response_dict = {self.envelope: scenario.respond(*args, **kwargs)}
                 if self.code:
                     response_dict[self.code] = scenario.status_code
-                response = json.dumps(
-                    response_dict
-                )
+                response = json.dumps(response_dict)
             else:
                 response = json.dumps(scenario.respond(*args, **kwargs))
             return Response(
