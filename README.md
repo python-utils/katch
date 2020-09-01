@@ -34,7 +34,7 @@ catcher.add_scenario(
 
 Calling the endpoint above with `curl 127.0.0.1:5000/break-list` will yield the following:
 ```json
-{"error": "Out of bound"}
+{"error": "Out of bound", "code":  400}
 ```
 
 ### Handle Multiple Exceptions Similarly
@@ -43,7 +43,7 @@ You can catch multiple exception classes with the same method:
 
 ```python
 catcher.add_scenario(
-    catch(IndexError, AssertionError, AttributeError).with_status_code(400).and_return("Out of bound")
+    catch(IndexError, AssertionError, AttributeError).with_status_code(400).and_return("Oops.")
 )
 ```
 
@@ -83,7 +83,7 @@ def break_math():
 
 Calling the endpoint above with `curl 127.0.0.1:5000/break-math` will yield the following:
 ```json
-{"error": "division by zero"}
+{"error": "division by zero", "code":  500}
 ```
 
 #### Respond from a Callable
@@ -153,6 +153,13 @@ def break_something():
         raise NoSoupForYouError(name, incident_id)
     return jsonify({"soup": "Minestrone"})
 ```
+
+### Status Code in the Response Body
+
+By default, *Katch* will return the status codes in the response body for registered scenarios, unless the envelope
+was set to `None` explicitly. You can either change the name of the attribute by passing a different string value to
+(e.g., `Catcher(app=app, code="status_code"))`), or you can setting to `None` to avoid adding it to the response body.
+
 
 ### Exception Ancestry
 

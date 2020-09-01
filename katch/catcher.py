@@ -1,15 +1,15 @@
 import json
 from flask import Response
-import uuid
 
 
 class Catcher:
     app = None
     scenarios = []
-    status_code = "message"
+    envelope = "message"
+    code = "code"
     pending_scenarios = []
 
-    def __init__(self, app=None, scenarios=None, envelope="message"):
+    def __init__(self, app=None, scenarios=None, envelope="message", code="code"):
         if scenarios:
             if app:
                 self.scenarios = scenarios
@@ -19,6 +19,7 @@ class Catcher:
             self.app = app
             self._apply()
         self.envelope = envelope
+        self.code = code
 
     def init_app(self, app):
         self.app = app
@@ -43,8 +44,11 @@ class Catcher:
     def _generate_scenario_handler(self, scenario):
         def f(*args, **kwargs):
             if self.envelope:
+                response_dict = {self.envelope: scenario.respond(*args, **kwargs)}
+                if self.code:
+                    response_dict[self.code] = scenario.status_code
                 response = json.dumps(
-                    {self.envelope: scenario.respond(*args, **kwargs)}
+                    response_dict
                 )
             else:
                 response = json.dumps(scenario.respond(*args, **kwargs))
