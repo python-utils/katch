@@ -22,6 +22,50 @@ class TestCatcher:
         assert "Out of bound" == error
 
     @staticmethod
+    def test_catcher_with_blueprint(app, blueprint, client):
+        Catcher(app=blueprint, envelope="error", code="status_code").add_scenarios(
+            catch(IndexError).with_status_code(400).and_return("Out of bound"),
+        )
+
+        @blueprint.route("/break-something")
+        def break_list():
+            my_list = ["foo"]
+            return my_list[1]
+
+        app.register_blueprint(blueprint)
+
+        response = client.get("/api/v1/break-something")
+        print(response.data)
+        error = response.json.get("error")
+        code_from_body = response.json.get("status_code")
+        assert 400 == response.status_code == code_from_body
+        assert "Out of bound" == error
+
+    @staticmethod
+    def test_catcher_with_first_scenario_taking_over(app, blueprint, client):
+        @blueprint.route("/break-something")
+        def break_list():
+            my_list = ["foo"]
+            return my_list[1]
+
+        app.register_blueprint(blueprint)
+
+        Catcher(app=app, envelope="error", code="status_code").add_scenarios(
+            catch(IndexError).with_status_code(400).and_return("App says hi"),
+        )
+
+        Catcher(app=blueprint, envelope="error", code="status_code").add_scenarios(
+            catch(IndexError).with_status_code(400).and_return("Blueprint says hi"),
+        )
+
+        response = client.get("/api/v1/break-something")
+        print(response.data)
+        error = response.json.get("error")
+        code_from_body = response.json.get("status_code")
+        assert 400 == response.status_code == code_from_body
+        assert "App says hi" == error
+
+    @staticmethod
     def test_catcher_with_stringified_exception(app, client):
         Catcher(app=app, envelope="message").add_scenarios(
             catch(ArithmeticError).with_status_code(401).and_stringify(),

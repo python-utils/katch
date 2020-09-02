@@ -1,6 +1,6 @@
 import pytest
 
-from flask import Flask
+from flask import Blueprint, Flask
 
 
 @pytest.fixture
@@ -17,6 +17,4 @@ def client(app):
 
 @pytest.fixture
 def blueprint(app):
-    bp = Blueprint("api", __name__, url_prefix="/")
-    app.register_blueprint(bp)
-    return bp
+    yield Blueprint("api", __name__, url_prefix="/api/v1/")
