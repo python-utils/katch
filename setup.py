@@ -23,5 +23,5 @@ setup(
     extras_require=extras,
     tests_require=tests_require,
     url="https://github.com/python-utils/katch",
-    version="0.0.1",
+    version="0.0.2",
 )
